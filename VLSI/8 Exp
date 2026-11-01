@@ -1,0 +1,26 @@
+Hardware Connections : 
+Connect the HC-05 to Arduino:
+HC-05 VCC → Arduino 5V
+HC-05 GND → Arduino GND
+HC-05 TX → Arduino RX (pin 0)
+HC-05 RX → Arduino TX (pin 1)
+HC-05 EN/KEY → leave unconnected (unless configuring AT commands)
+
+
+Arduino Side Code :
+void setup() {
+  Serial.begin(9600); // HC-05 default baud
+}
+
+void loop() {
+  Serial.println("Hello Pi");
+  delay(1000);
+
+  // If Pi sends data back
+  if (Serial.available()) {
+    char c = Serial.read();
+    // Echo received char back
+    Serial.print("Got from Pi: ");
+    Serial.println(c);
+  }
+}
