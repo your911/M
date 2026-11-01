@@ -1,0 +1,39 @@
+Universal Shift Register
+
+
+library IEEE;
+              use IEEE.STD_LOGIC_1164.ALL;
+              use IEEE.STD_LOGIC_ARITH.ALL;
+              use IEEE.STD_LOGIC_UNSIGNED.ALL;
+entity shiftregister is
+    Port ( clk : in  STD_LOGIC;
+           reset : in  STD_LOGIC;
+           datain : in  STD_LOGIC_VECTOR (3 downto 0);
+           sel : in  STD_LOGIC_VECTOR (1 downto 0);
+           sl_in : in  STD_LOGIC;
+           sr_in : in  STD_LOGIC;
+           dataout : out  STD_LOGIC_VECTOR (3 downto 0));
+end shiftregister;
+
+architecture Behavioral of shiftregister is
+
+begin
+   process(reset, clk, sel, sl_in, sr_in, datain)
+   variable TEMP : STD_LOGIC_VECTOR (3 downto 0);
+
+begin
+   if reset = '1' then
+      TEMP := "0000";
+  
+   elsif clk'event and clk = '1' then
+         case Sel is	
+			     when "11" => TEMP := datain;
+				  when "01" => TEMP := TEMP(2 downto 0) & sl_in;
+				  when "10" => TEMP := sr_in & TEMP(3 downto 1);
+				  when others =>  NULL;
+			end case;
+	 end if;
+				  dataout <= TEMP;
+end process;
+
+end Behavioral;
